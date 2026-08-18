@@ -1,0 +1,105 @@
+=======================================================
+  BASIC GIT & GITHUB COMMANDS — NovaMind AI Project
+=======================================================
+
+-------------------------------------------------------
+1. INITIAL SETUP (run once on your machine)
+-------------------------------------------------------
+git config --global user.name  "Aamir Imran"
+git config --global user.email "your-email@example.com"
+
+-------------------------------------------------------
+2. INITIALIZE REPO (run once in project folder)
+-------------------------------------------------------
+git init
+
+-------------------------------------------------------
+3. CONNECT TO GITHUB REMOTE
+-------------------------------------------------------
+git remote add origin https://github.com/aamir490/Use-Case-8---Generative-AI-Application-NovaMind-AI-chat-sagemaker.git
+
+# Verify remote is set
+git remote -v
+
+-------------------------------------------------------
+4. STAGE FILES
+-------------------------------------------------------
+# Stage a specific file
+git add index.html
+
+# Stage multiple files
+git add index.html lambda_function.py README.md
+
+# Stage everything in the folder
+git add .
+
+# Check what is staged
+git status
+
+-------------------------------------------------------
+5. COMMIT
+-------------------------------------------------------
+git commit -m "Initial commit — NovaMind AI application"
+
+-------------------------------------------------------
+6. PUSH TO GITHUB
+-------------------------------------------------------
+# First push (sets upstream)
+git push -u origin main
+
+# All subsequent pushes
+git push
+
+-------------------------------------------------------
+7. PULL LATEST FROM GITHUB
+-------------------------------------------------------
+git pull origin main
+
+-------------------------------------------------------
+8. CHECK HISTORY & STATUS
+-------------------------------------------------------
+git status               # show changed/staged files
+git log --oneline        # short commit history
+git log --oneline -10    # last 10 commits
+
+-------------------------------------------------------
+9. BRANCHING (optional — for feature work)
+-------------------------------------------------------
+git branch feature/ui-update        # create branch
+git checkout feature/ui-update      # switch to branch
+git checkout -b feature/ui-update   # create + switch in one step
+git checkout main                   # go back to main
+git merge feature/ui-update         # merge branch into main
+
+-------------------------------------------------------
+10. UNDO / FIX MISTAKES
+-------------------------------------------------------
+# Unstage a file (before commit)
+git restore --staged index.html
+
+# Discard local changes to a file
+git restore index.html
+
+# Edit the last commit message (before push only)
+git commit --amend -m "Better commit message"
+
+-------------------------------------------------------
+11. FULL WORKFLOW — FIRST TIME PUSH
+-------------------------------------------------------
+git init
+git add .
+git commit -m "Initial commit — NovaMind AI application"
+git remote add origin https://github.com/aamir490/Use-Case-8---Generative-AI-Application-NovaMind-AI-chat-sagemaker.git
+git branch -M main
+git push -u origin main
+
+-------------------------------------------------------
+12. FULL WORKFLOW — UPDATING FILES AFTER CHANGES
+-------------------------------------------------------
+git add .
+git commit -m "Update UI and fix output window"
+git push
+
+=======================================================
+  TIP: Always run  git status  before committing
+=======================================================

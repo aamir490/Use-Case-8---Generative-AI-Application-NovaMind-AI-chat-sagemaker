@@ -1,0 +1,15 @@
+What is cloud computing? Explain in simple terms.
+
+What are the benefits of using AWS over on-premise servers?
+
+List 5 best practices for securing a cloud application.
+
+Write a short email to a client explaining that their project is delayed by one week.
+
+What is CloudFront and how does it improve web performance?
+
+Explain the difference between AWS Lambda and EC2.
+
+
+What is Amazon S3 and what are its use cases?
+

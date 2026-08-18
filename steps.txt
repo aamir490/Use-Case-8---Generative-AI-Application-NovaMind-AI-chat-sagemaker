@@ -1,0 +1,65 @@
+1.	After Logging Into AWS Console, Go To Amazon SageMaker AI.
+
+1a. In SageMaker AI, Go To Studio And Create A User With Default Settings.
+
+1b. Launch Studio To Create JupyterLab Space With Default Settings. Example: (Instance: ml.t3.medium, Storage: 5GB).
+
+1c. Open Jupyter Notebook, Import “jupyter_notebook.ipynb” File From Desktop.
+
+1d. Run The Code Starting From Step 2 Until Step 3 At Least, Then Continue Running All Code Sections.
+
+2a. Now, Go To AWS Lambda And Create A Function. While Configuring, Choose Python 3.11.
+
+2b. Make Sure The IAM Role Has AmazonSageMakerFullAccess Policy Attached To API Gateway Or Your Organisation’s Policy.
+
+2c. Copy The Code From Desktop “lambda_function.py” File And Paste It In The Lambda Code Editor.
+
+2d. Go To Configurations → Environment Variables → Add Environment Variable, TimeOut 5 minutes
+
+2e. Key → ENDPOINT_NAME, Value → “hf-llm-falcon-7b-instruct-bf16-2025-10-14-07-29-29-666”.
+     Best Practice Is To Take The Name From Endpoint In SageMaker Studio.
+
+2f. Deploy Lambda Function. 
+
+3.	Now, Go To AWS Console, Search API Gateway, And Choose REST API.
+
+3a. Click On Import And Upload “generative-ai-api-prod-swagger-apigateway.json”.
+
+3b. Review Resources And Stages.
+
+3c. From The Dropdown In POST Resource, Click On “Integration Request” And Replace The Lambda Function With Your Lambda Function.
+
+3d. If You Already Made Changes In The Code On Desktop, Then Check If It Is Applied.
+
+3e. Deploy API And Create A New Stage Named According To Your Organisation’s Naming Convention.
+
+GenAI Backend Is Ready. Let’s Prepare The Frontend.
+
+4.	On Your Desktop:
+
+4a. Edit “index.html”. Change → var apiGatewayUrl = “{API_GATEWAY_POST_URL}”; (Line Number 245)
+
+4b. Upload “logo.jpeg” And “index.html” To The S3 Bucket That You Will Choose In CloudFront.
+	
+5.	Go To AWS CloudFront, Create A Distribution, Specify Origin As S3, And Choose The Bucket Where You Uploaded “index.html”.
+
+5a. Go To CloudFront Distribution → General → Edit → Set Default Root Object To “index.html”.
+
+5b. Go To Your CloudFront Distribution → Origins → Check “cloudage-gen-ai…” → Edit → Copy S3 Bucket Policy.
+
+5c. Go To S3 Bucket Containing “index.html” And Edit The S3 Bucket Policy.
+
+5d. Or Paste The S3 Policy From Desktop. Remember To Change The ARN.
+
+5e. Wait Until CloudFront Distribution Deploys To All Edge Locations (It May Take 10 Minutes Depending On The Size Of The Web Application).
+
+5f. Go To CloudFront Distribution → Invalidations → Create Invalidation → Paste “/*”.
+
+5g. Once Deployed, Go To The URL (Distribution Domain Name).
+
+Ask Bigger Questions. Remember This Is A FM Model Trained On AWS Dataset And You Can Deploy Another Model From SageMaker Ai (Many Options); However, Your Organisation's Will Need To Bear The Cost.
+
+Great Work! Project Completed.
+
+
+

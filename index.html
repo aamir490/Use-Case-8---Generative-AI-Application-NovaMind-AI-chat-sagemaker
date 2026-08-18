@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaMind AI — by Aamir</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary:    #0a0e1a;
+            --bg-secondary:  #0f1629;
+            --bg-card:       #131929;
+            --bg-card-hover: #161e32;
+            --border:        rgba(99, 120, 255, 0.15);
+            --border-focus:  rgba(99, 120, 255, 0.6);
+            --accent-1:      #6378ff;
+            --accent-2:      #a259ff;
+            --accent-3:      #00d4ff;
+            --text-primary:  #f0f4ff;
+            --text-secondary:#8a94b8;
+            --text-muted:    #4a5578;
+            --success:       #00e5a0;
+            --warning:       #ffb84d;
+            --glow-blue:     rgba(99, 120, 255, 0.25);
+            --glow-purple:   rgba(162, 89, 255, 0.2);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Animated background grid ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(99,120,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99,120,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Ambient glow orbs ── */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(99,120,255,0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-right {
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(162,89,255,0.07) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Layout wrapper ── */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─────────────────────────────────────────
+           HEADER / NAV
+        ───────────────────────────────────────── */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .nav-logo-placeholder {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-tagline {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.4; }
+        }
+
+        .linkedin-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0077b5, #00a0dc);
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.2px;
+        }
+
+        .linkedin-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 119, 181, 0.4);
+        }
+
+        .linkedin-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        /* ─────────────────────────────────────────
+           HERO
+        ───────────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 72px 24px 56px;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: rgba(99,120,255,0.08);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--accent-3);
+            margin-bottom: 28px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .hero-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-3);
+            box-shadow: 0 0 8px var(--accent-3);
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title .gradient-text {
+            background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-3) 50%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            max-width: 560px;
+            margin: 0 auto 16px;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .hero-credit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-credit a {
+            color: var(--accent-1);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hero-credit a:hover {
+            color: var(--accent-3);
+        }
+
+        /* ─────────────────────────────────────────
+           STATS ROW
+        ───────────────────────────────────────── */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 0 24px 56px;
+        }
+
+        .stat-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-chip .stat-icon {
+            font-size: 1rem;
+        }
+
+        .stat-chip strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ─────────────────────────────────────────
+           MAIN CARD
+        ───────────────────────────────────────── */
+        .main-content {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .ai-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(99,120,255,0.05);
+        }
+
+        /* ── Card header bar ── */
+        .card-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .card-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .card-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red    { background: #ff5f57; }
+        .dot-yellow { background: #febc2e; }
+        .dot-green  { background: #28c840; }
+
+        .card-title-bar {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        .card-kbd {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: var(--bg-primary);
+            font-family: monospace;
+        }
+
+        /* ── Prompt area ── */
+        .prompt-area {
+            padding: 28px 28px 20px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .section-label .label-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-1);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 18px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.96rem;
+            line-height: 1.65;
+            resize: vertical;
+            min-height: 140px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+        }
+
+        textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        textarea:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(99,120,255,0.1);
+        }
+
+        /* ── Action bar ── */
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 28px 24px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .action-hints {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .action-hints kbd {
+            padding: 2px 6px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--bg-secondary);
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
+
+        .generate-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px var(--glow-blue);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px var(--glow-purple);
+        }
+
+        .generate-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .btn-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .generate-btn:hover:not(:disabled) .btn-icon {
+            transform: translateX(2px);
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 28px;
+        }
+
+        /* ── Output area ── */
+        .output-area {
+            padding: 24px 28px 28px;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .output-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .output-status.active {
+            color: var(--success);
+            border-color: rgba(0, 229, 160, 0.2);
+        }
+
+        #output {
+            min-height: 220px;
+            height: auto;
+            overflow-y: hidden;
+            resize: none;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.93rem;
+            line-height: 1.7;
+            cursor: default;
+        }
+
+        /* ── Thinking animation overlay ── */
+        .thinking-overlay {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            font-size: 0.88rem;
+            color: var(--accent-3);
+        }
+
+        .thinking-dots span {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-3);
+            animation: bounce 1.2s infinite;
+        }
+
+        .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+            40%            { transform: translateY(-6px); opacity: 1; }
+        }
+
+        /* ─────────────────────────────────────────
+           FOOTER
+        ───────────────────────────────────────── */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 28px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: rgba(10, 14, 26, 0.6);
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer-brand {
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            background: rgba(255, 184, 77, 0.07);
+            border: 1px solid rgba(255, 184, 77, 0.2);
+            border-radius: 8px;
+            padding: 10px 16px;
+            max-width: 420px;
+            line-height: 1.5;
+        }
+
+        .footer-center .warn-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-tech {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .tech-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            margin: 1px;
+        }
+
+        /* ─────────────────────────────────────────
+           RESPONSIVE
+        ───────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 14px 20px;
+            }
+
+            .nav-badge {
+                display: none;
+            }
+
+            .hero {
+                padding: 48px 20px 40px;
+            }
+
+            .stats-row {
+                padding: 0 20px 40px;
+            }
+
+            .main-content {
+                padding: 0 16px 60px;
+            }
+
+            .prompt-area,
+            .output-area {
+                padding: 20px 20px 16px;
+            }
+
+            .action-bar {
+                padding: 12px 20px 20px;
+            }
+
+            .divider {
+                margin: 0 20px;
+            }
+
+            .generate-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer {
+                padding: 24px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-center {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+                letter-spacing: -1px;
+            }
+
+            .brand-tagline {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb-right"></div>
+
+    <div class="page-wrapper">
+
+        <!-- ── Navbar ── -->
+        <nav class="navbar">
+            <a class="nav-brand" href="#">
+                <img src="mylogoo.png" alt="NovaMind AI Logo" class="nav-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="nav-logo-placeholder" style="display:none;">N</div>
+                <div class="brand-text">
+                    <span class="brand-name">NovaMind AI</span>
+                    <span class="brand-tagline">Powered by Falcon-7B · AWS</span>
+                </div>
+            </a>
+
+            <div class="nav-links">
+                <div class="nav-badge">
+                    <span class="dot"></span>
+                    Model Online
+                </div>
+                <a class="linkedin-btn"
+                   href="https://www.linkedin.com/in/aamir-imran"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    Aamir Imran
+                </a>
+            </div>
+        </nav>
+
+        <!-- ── Hero ── -->
+        <section class="hero">
+            <div class="hero-pill">Generative AI Demo</div>
+            <h1 class="hero-title">
+                Ask anything with<br>
+                <span class="gradient-text">NovaMind AI</span>
+            </h1>
+            <p class="hero-desc">
+                A production-grade generative AI application built on AWS — SageMaker, Lambda, API Gateway, S3 &amp; CloudFront. Powered by the Falcon-7B-Instruct large language model.
+            </p>
+            <p class="hero-credit">
+                Built by <a href="https://www.linkedin.com/in/aamir-imran" target="_blank" rel="noopener">Aamir Imran</a>
+            </p>
+        </section>
+
+        <!-- ── Stats chips ── -->
+        <div class="stats-row">
+            <div class="stat-chip">
+                <span class="stat-icon">🧠</span>
+                <strong>Falcon-7B</strong> Instruct Model
+            </div>
+            <div class="stat-chip">
+                <span class="stat-icon">⚡</span>
+                <strong>AWS SageMaker</strong> Endpoint
+            </div>
+            <div class="stat-chip">
+                <span class="stat-icon">🌐</span>
+                <strong>CloudFront</strong> CDN Delivery
+            </div>
+            <div class="stat-chip">
+                <span class="stat-icon">🔗</span>
+                <strong>REST API</strong> via API Gateway
+            </div>
+        </div>
+
+        <!-- ── Main AI card ── -->
+        <main class="main-content">
+            <div class="ai-card">
+
+                <!-- macOS-style top bar -->
+                <div class="card-topbar">
+                    <div class="card-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <span class="card-title-bar">novamind-ai — inference console</span>
+                    <span class="card-kbd">Ctrl + Enter to run</span>
+                </div>
+
+                <!-- Prompt input -->
+                <div class="prompt-area">
+                    <div class="section-label">
+                        <span class="label-dot"></span>
+                        Prompt
+                    </div>
+                    <textarea id="content"
+                              rows="6"
+                              placeholder="Ask anything — try: 'What is Amazon SageMaker?' or 'Write a Python function to sort a list.'"></textarea>
+                </div>
+
+                <!-- Action bar -->
+                <div class="action-bar">
+                    <span class="action-hints">
+                        Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to generate
+                    </span>
+                    <button class="generate-btn" onclick="callApi()" id="generateBtn">
+                        <div class="spinner" id="spinner"></div>
+                        <span class="btn-icon" id="btnIcon">✦</span>
+                        <span id="btnText">Generate Response</span>
+                    </button>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Output -->
+                <div class="output-area">
+                    <div class="output-header">
+                        <div class="section-label" style="margin-bottom:0;">
+                            <span class="label-dot" style="background:var(--accent-3);"></span>
+                            Generated Output
+                        </div>
+                        <div class="output-status" id="outputStatus">Awaiting prompt</div>
+                    </div>
+
+                    <!-- Thinking animation (hidden by default) -->
+                    <div class="thinking-overlay" id="thinkingOverlay">
+                        <div class="thinking-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        NovaMind is thinking...
+                    </div>
+
+                    <textarea id="output"
+                              rows="10"
+                              readonly
+                              placeholder="Your AI-generated response will appear here..."></textarea>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ── Footer ── -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span class="footer-brand">NovaMind AI</span>
+                <span class="footer-sub">Created by Aamir Imran &nbsp;·&nbsp; 2025</span>
+            </div>
+
+            <div class="footer-center">
+                <span class="warn-icon">⚠️</span>
+                AI outputs may be inaccurate. Always review responses before acting on them.
+            </div>
+
+            <div class="footer-right">
+                <div class="footer-tech">
+                    <span class="tech-tag">AWS SageMaker</span>
+                    <span class="tech-tag">Lambda</span>
+                    <span class="tech-tag">API Gateway</span>
+                    <span class="tech-tag">S3</span>
+                    <span class="tech-tag">CloudFront</span>
+                </div>
+            </div>
+        </footer>
+
+    </div><!-- end .page-wrapper -->
+
+    <script>
+        // Auto-grow textarea to fit content
+        function autoGrow(el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+
+        function callApi() {
+            var content = document.getElementById('content').value;
+            var apiGatewayUrl = "https://7q2epnpf77.execute-api.us-east-1.amazonaws.com/proddd/summarize";
+
+            if (!content.trim()) {
+                showError('Please enter a prompt before generating.');
+                return;
+            }
+
+            setLoading(true);
+
+            fetch(apiGatewayUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    inputs: `User: ${content}\nAssistant:`,
+                    parameters: { 'max_new_tokens': 1024 }
+                })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                if (data && data[0] && data[0].generated_text) {
+                    // Falcon returns the full prompt + completion — strip everything up to "Assistant:"
+                    let raw = data[0].generated_text;
+                    const marker = 'Assistant:';
+                    const idx = raw.lastIndexOf(marker);
+                    const reply = idx !== -1 ? raw.slice(idx + marker.length).trim() : raw.trim();
+
+                    document.getElementById('output').value = reply;
+                    autoGrow(document.getElementById('output'));
+                    setOutputStatus('Response generated', true);
+                } else {
+                    throw new Error('Unexpected response format from model.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').value = '⚠ Error: ' + error.message;
+                setOutputStatus('Error', false);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+        }
+
+        function setLoading(on) {
+            const btn      = document.getElementById('generateBtn');
+            const spinner  = document.getElementById('spinner');
+            const icon     = document.getElementById('btnIcon');
+            const text     = document.getElementById('btnText');
+            const thinking = document.getElementById('thinkingOverlay');
+            const output   = document.getElementById('output');
+
+            btn.disabled = on;
+
+            if (on) {
+                spinner.style.display  = 'block';
+                icon.style.display     = 'none';
+                text.textContent       = 'Generating...';
+                thinking.style.display = 'flex';
+                output.style.display   = 'none';
+                output.style.height    = 'auto';
+                output.value           = '';
+                setOutputStatus('Thinking...', false);
+            } else {
+                spinner.style.display  = 'none';
+                icon.style.display     = 'inline';
+                text.textContent       = 'Generate Response';
+                thinking.style.display = 'none';
+                output.style.display   = 'block';
+            }
+        }
+
+        function setOutputStatus(msg, success) {
+            const el = document.getElementById('outputStatus');
+            el.textContent = msg;
+            el.className = 'output-status' + (success ? ' active' : '');
+        }
+
+        function showError(msg) {
+            document.getElementById('output').value = '';
+            const output = document.getElementById('output');
+            output.placeholder = msg;
+            output.style.borderColor = '#ff5f57';
+            setTimeout(() => {
+                output.placeholder = 'Your AI-generated response will appear here...';
+                output.style.borderColor = '';
+            }, 2500);
+        }
+
+        // Ctrl + Enter shortcut
+        document.getElementById('content').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') callApi();
+        });
+    </script>
+</body>
+</html>
